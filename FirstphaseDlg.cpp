@@ -1,4 +1,5 @@
 ﻿
+// 发现多进程轮询效果更好，此版本暂停维护
 // FirstphaseDlg.cpp : 实现文件
 //
 #include "stdafx.h"
