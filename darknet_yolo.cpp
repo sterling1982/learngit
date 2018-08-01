@@ -1,4 +1,4 @@
-#include"stdafx.h"
+ï»¿#include"stdafx.h"
 #pragma once
 
 #include"darknet_yolo.h"
@@ -12,8 +12,8 @@
 using namespace cv;
 using namespace std;
 
-string url_front = "http://192.168.14.31:8080/com.bimcenter.transfer/dataPush?method=push&data=";//·¢ÍùÍøÖ·µÄÇ°°ë²¿·Ö
-string url_all;																					 //Õû¸öµÄÍøÖ·
+string url_front = "http://192.168.14.31:8080/com.bimcenter.transfer/dataPush?method=push&data=";//å‘å¾€ç½‘å€çš„å‰åŠéƒ¨åˆ†
+string url_all;																					 //æ•´ä¸ªçš„ç½‘å€
 
 
 cv::Mat darknet_yolo::draw_boxes(cv::Mat mat_img, std::vector<bbox_t> result_vec, std::vector<std::string> obj_names, unsigned int wait_msec) {
@@ -55,7 +55,7 @@ void LoadFromTXT(const char* txtFilename, CvPoint* cooConer)
 }
 
 Mat solve_perspective(){
-//»ñÈ¡ĞéÄâÏßÈ¦½ÇµãºÍÊÀ½ç×ø±êÏµµã
+//è·å–è™šæ‹Ÿçº¿åœˆè§’ç‚¹å’Œä¸–ç•Œåæ ‡ç³»ç‚¹
 
 	CvPoint VirtualLoopPiont[4];
 	CvPoint WorldPlane[4];
@@ -74,7 +74,7 @@ Mat solve_perspective(){
 	pHP.push_back(Point2f(WorldPlane[2].x, WorldPlane[2].y));
 	pHP.push_back(Point2f(WorldPlane[3].x, WorldPlane[3].y));
 
-	//Çó½âÍ¸ÊÓ±ä»»¾ØÕó
+	//æ±‚è§£é€è§†å˜æ¢çŸ©é˜µ
 	 Mat homograph = findHomography(pFP, pHP, RANSAC);
 	return homograph;
 }
@@ -103,7 +103,7 @@ void darknet_yolo::transmit_result(std::vector<bbox_t> result_vec,vector<Point2f
 	json.addMember("person_num", person_num);
 	for (auto &person : worldcoordinate)
 	{
-		string obj[] = {"longitude ",num2str(person.x) ,"latitude",num2str(person.y) };//Ìí¼Ó¶ÔÏó
+		string obj[] = {"longitude ",num2str(person.x) ,"latitude",num2str(person.y) };//æ·»åŠ å¯¹è±¡
 		json.addObj("people", obj, 4);
 	}
 	string jsonstr = json.toString();
@@ -164,7 +164,7 @@ long long getTimeStampMs()
 }
 /*
 CvMat* darknet_yolo::solve_perspective(std::vector<bbox_t> result_vec) {
-//»ñÈ¡ĞéÄâÏßÈ¦½ÇµãºÍÊÀ½ç×ø±êÏµµã
+//è·å–è™šæ‹Ÿçº¿åœˆè§’ç‚¹å’Œä¸–ç•Œåæ ‡ç³»ç‚¹
 
 CvPoint VirtualLoopPiont[4];
 CvPoint WorldPlane[4];
@@ -180,7 +180,7 @@ float(WorldPlane[0].x), float(WorldPlane[0].y),
 float(WorldPlane[1].x), float(WorldPlane[1].y),
 float(WorldPlane[2].x), float(WorldPlane[2].y),
 float(WorldPlane[3].x), float(WorldPlane[3].y) };
-//Çó½âÍ¸ÊÓ±ä»»¾ØÕó
+//æ±‚è§£é€è§†å˜æ¢çŸ©é˜µ
 CvMat* pFramePoints = new CvMat;
 CvMat* pWorldPoints = new CvMat;
 CvMat* homograph = new CvMat;
@@ -201,7 +201,7 @@ void darknet_yolo::get_worldcoordinate(std::vector<bbox_t> result_vec, CvMat* ho
 	double h11 = cvmGet(homograph, 0, 0); double h12 = cvmGet(homograph, 0, 1); double h13 = cvmGet(homograph, 0, 2);
 	double h21 = cvmGet(homograph, 1, 0); double h22 = cvmGet(homograph, 1, 1); double h23 = cvmGet(homograph, 1, 2);
 	double h31 = cvmGet(homograph, 2, 0); double h32 = cvmGet(homograph, 2, 1); double h33 = cvmGet(homograph, 2, 2);
-	//»ñÈ¡ÈËµÄÊÀ½ç×ø±ê
+	//è·å–äººçš„ä¸–ç•Œåæ ‡
 	vector<CvPoint>person_frame, person_world;
 	vector<CvPoint>::iterator iter1;
 	//i.x i.y i.w  i.h

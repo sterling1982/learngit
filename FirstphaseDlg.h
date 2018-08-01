@@ -1,5 +1,5 @@
-
-// FirstphaseDlg.h : Í·ÎÄ¼ş
+ï»¿
+// FirstphaseDlg.h : å¤´æ–‡ä»¶
 
 #pragma once
 #include "PLANE.h"
@@ -24,21 +24,21 @@ using namespace std;
 
  
 #define MaxCameraNum  8
-#define threadBatch 1										  //Ò»¸öÏß³ÌÖĞ°üº¬µÄÉãÏñÍ·ÊıÄ¿£¬threadBatchÎªÄÜ±»16Õû³ıµÄÊı													
-#define Time 1												  //ÊµÊ±Ô¤ÀÀµÄÖ¡ÊıÏŞÖÆ												
+#define threadBatch 1										  //ä¸€ä¸ªçº¿ç¨‹ä¸­åŒ…å«çš„æ‘„åƒå¤´æ•°ç›®ï¼ŒthreadBatchä¸ºèƒ½è¢«16æ•´é™¤çš„æ•°													
+#define Time 1												  //å®æ—¶é¢„è§ˆçš„å¸§æ•°é™åˆ¶												
 
 typedef long CamHandle;                                        //Camera Handle 
-static HANDLE hMutex[MaxCameraNum][2];						   //ÎªÃ¿¸öÉãÏñÍ·µÄÁ½¸ö¶ÓÁĞ·ÖÅä»¥³âÁ¿
-static HANDLE hMutexDetector[3];							   //Îª3¸ödetector·ÖÅä»¥³âÁ¿
-static long nPort[MaxCameraNum];							   //ÎªÃ¿¸öÉãÏñÍ··ÖÅäÒ»¸ö²¥·ÅÍ¨µÀ
+static HANDLE hMutex[MaxCameraNum][2];						   //ä¸ºæ¯ä¸ªæ‘„åƒå¤´çš„ä¸¤ä¸ªé˜Ÿåˆ—åˆ†é…äº’æ–¥é‡
+static HANDLE hMutexDetector[3];							   //ä¸º3ä¸ªdetectoråˆ†é…äº’æ–¥é‡
+static long nPort[MaxCameraNum];							   //ä¸ºæ¯ä¸ªæ‘„åƒå¤´åˆ†é…ä¸€ä¸ªæ’­æ”¾é€šé“
 
 //static IplImage* pImg[MaxCameraNum];
-static int trigger[MaxCameraNum] = { 0 };					   //ÇĞ»»Á½¸ö¶ÓÁĞµÄ¿ª¹Ø
-static CircleQueue pImg[MaxCameraNum][2];					   //´æ´¢Ã¿¸öÉãÏñÍ·µÄÁ½¸ö¶ÓÁĞµÄÍ·Ö¸Õë
+static int trigger[MaxCameraNum] = { 0 };					   //åˆ‡æ¢ä¸¤ä¸ªé˜Ÿåˆ—çš„å¼€å…³
+static CircleQueue pImg[MaxCameraNum][2];					   //å­˜å‚¨æ¯ä¸ªæ‘„åƒå¤´çš„ä¸¤ä¸ªé˜Ÿåˆ—çš„å¤´æŒ‡é’ˆ
 
 //static int reduceThread[MaxCameraNum] = { 0 };
-static float Scalefactor;									   //ÓÉyv12×ªÎªIplImageµÄËõ·Å±¶Êı
-static int isStop[MaxCameraNum / threadBatch] = { 0 };		   //Ïß³ÌÊÇ·ñ¹Ø±ÕµÄ±êÖ¾
+static float Scalefactor;									   //ç”±yv12è½¬ä¸ºIplImageçš„ç¼©æ”¾å€æ•°
+static int isStop[MaxCameraNum / threadBatch] = { 0 };		   //çº¿ç¨‹æ˜¯å¦å…³é—­çš„æ ‡å¿—
 
 class HKCamDriver {
 public:
@@ -46,24 +46,24 @@ public:
 	HKCamDriver();
 	~HKCamDriver();
 
-	//³õÊ¼»¯sdk£¬¼´±ã¶à¸öÉãÏñÍ·£¬µ÷ÓÃÒ»´Î¼´¿É
+	//åˆå§‹åŒ–sdkï¼Œå³ä¾¿å¤šä¸ªæ‘„åƒå¤´ï¼Œè°ƒç”¨ä¸€æ¬¡å³å¯
 	void InitHKNetSDK(void);
-    //³õÊ¼»¯ÉãÏñÍ·
+    //åˆå§‹åŒ–æ‘„åƒå¤´
 	CamHandle InitCamera(char *sIP, char *UsrName, char *PsW, int Port = 8000);
-	//×¢ÏúÉè±¸
+	//æ³¨é”€è®¾å¤‡
 	int ReleaseCamera(void);
-	//Òì³£»Øµ÷º¯Êı
+	//å¼‚å¸¸å›è°ƒå‡½æ•°
 	static void CALLBACK ExceptionCallBack(DWORD dwType, LONG lUserID, LONG lHandle, void *pUser);
-	//½âÂëº¯Êı£¬½«yv12×ªÎªrgb
+	//è§£ç å‡½æ•°ï¼Œå°†yv12è½¬ä¸ºrgb
 	static void CALLBACK DecCBFun(long nPort, char * pBuf, long nSize, FRAME_INFO * pFrameInfo, long nReserved1, long nReserved2);
-	//ÊµÊ±½âÂëº¯Êı£¬ÀïÃæÉèÖÃÁËDecCBFun×÷ÎªÆä»Øµ÷º¯Êı
+	//å®æ—¶è§£ç å‡½æ•°ï¼Œé‡Œé¢è®¾ç½®äº†DecCBFunä½œä¸ºå…¶å›è°ƒå‡½æ•°
 	static void CALLBACK fRealDataCallBack(LONG lRealHandle, DWORD dwDataType, BYTE *pBuffer, DWORD dwBufSize, void *pUser);
-	//ÉèÖÃyv12µ½IplImageµÄËõ·Å±¶Êı
+	//è®¾ç½®yv12åˆ°IplImageçš„ç¼©æ”¾å€æ•°
 	static void SetScaleFactor(float factor);
-	//ÊµÊ±²¥·Å¾ä±ú
+	//å®æ—¶æ’­æ”¾å¥æŸ„
 	LONG lRealPlayHandle;
 private:
-	//½« yv12×ªÎªYUV£¬ÊôÓÚDecCBFunµÄÒ»²¿·Ö  
+	//å°† yv12è½¬ä¸ºYUVï¼Œå±äºDecCBFunçš„ä¸€éƒ¨åˆ†  
 	static void yv12toYUV(char *outYuv, char *inYv12, int width, int height, int widthStep);
 	//Camera User ID                                        
 	LONG lUserID;
@@ -72,28 +72,28 @@ private:
 
 
 
-// CFirstphaseDlg ¶Ô»°¿ò
+// CFirstphaseDlg å¯¹è¯æ¡†
 class CFirstphaseDlg : public CDialogEx
 {
-// ¹¹Ôì
+// æ„é€ 
 public:
-	CFirstphaseDlg(CWnd* pParent = NULL);	// ±ê×¼¹¹Ôìº¯Êı
+	CFirstphaseDlg(CWnd* pParent = NULL);	// æ ‡å‡†æ„é€ å‡½æ•°
 	~CFirstphaseDlg();
 
-// ¶Ô»°¿òÊı¾İ
+// å¯¹è¯æ¡†æ•°æ®
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_FIRSTPHASE_DIALOG };
 #endif
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV Ö§³Ö
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV æ”¯æŒ
 
 
-// ÊµÏÖ
+// å®ç°
 protected:
 	HICON m_hIcon;
 
-	// Éú³ÉµÄÏûÏ¢Ó³Éäº¯Êı
+	// ç”Ÿæˆçš„æ¶ˆæ¯æ˜ å°„å‡½æ•°
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();

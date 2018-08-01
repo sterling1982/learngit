@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"stdafx.h"
 #include "yolo_v2_class.hpp"
 
@@ -7,24 +7,24 @@ using namespace cv;
 
 class darknet_yolo {
 public:
-	//ÓÃ·½¿ò¿ò×¡¼ì²âµ½µÄÈË
+	//ç”¨æ–¹æ¡†æ¡†ä½æ£€æµ‹åˆ°çš„äºº
 	Mat draw_boxes(Mat mat_img, vector<bbox_t> result_vec, vector<std::string> obj_names, unsigned int wait_msec = 0);
 	//CvMat* solve_perspective(std::vector<bbox_t> result_vec);
 	//void get_worldcoordinate(std::vector<bbox_t> result_vec, CvMat* homograph);
-	//µÃµ½ÈËµÄÊÀ½ç×ø±ê
+	//å¾—åˆ°äººçš„ä¸–ç•Œåæ ‡
 	vector<Point2f> get_worldcoordinate(std::vector<bbox_t> result_vec, Mat homograph);
 	//void transmit_result(std::vector<bbox_t> result_vec, vector<Point2f> worldcoordinate,int id);
-	//´«Êä¼ì²â½á¹û
+	//ä¼ è¾“æ£€æµ‹ç»“æœ
 	void transmit_result(std::vector<bbox_t> result_vec);
 
 };
-//Çó½âÍ¸ÊÓ±ä»»¾ØÕó
+//æ±‚è§£é€è§†å˜æ¢çŸ©é˜µ
 Mat solve_perspective();
-//¶ÁÈ¡ÇøÓò×ø±ê
+//è¯»å–åŒºåŸŸåæ ‡
 void LoadFromTXT(const char* txtFilename, CvPoint* cooConer);
-//½«Êı×Ö×ªÎªstring
+//å°†æ•°å­—è½¬ä¸ºstring
 string num2str(int num);
 string num2str(float num);
-//»ñÈ¡ºÁÃë¼¶±ğµÄÊ±¼ä´Á
+//è·å–æ¯«ç§’çº§åˆ«çš„æ—¶é—´æˆ³
 long long getTimeStampMs();
 

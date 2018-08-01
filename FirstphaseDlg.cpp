@@ -1,5 +1,5 @@
-
-// FirstphaseDlg.cpp : ÊµÏÖÎÄ¼ş
+ï»¿
+// FirstphaseDlg.cpp : å®ç°æ–‡ä»¶
 //
 #include "stdafx.h"
 #include "afxdialogex.h"
@@ -25,21 +25,21 @@
 using namespace cv;
 using namespace std;
 
-typedef struct                                                           //´«ÍùÏß³Ìº¯ÊıµÄÊı¾İ¸ñÊ½
+typedef struct                                                           //ä¼ å¾€çº¿ç¨‹å‡½æ•°çš„æ•°æ®æ ¼å¼
 {
 	HKCamDriver m_CamDriver[threadBatch];
 	int idex_cam[threadBatch];
 	int idex_thread;
 }caminfo;																
 
-HANDLE thread[MaxCameraNum / threadBatch] = { NULL };					//Ïß³Ì¾ä±ú
+HANDLE thread[MaxCameraNum / threadBatch] = { NULL };					//çº¿ç¨‹å¥æŸ„
 //int CurrentFrameRate;
-Mat homograph;															//Í¸ÊÓ±ä»»¾ØÕó
-Mat video[MaxCameraNum];												//´æ´¢×ª»»Ö®ºóµÄÖ¡
-Size s;																	//videoÖĞÖ¡µÄ³ß´ç
-double scale_opencv = 1;												//µ÷½ÚÏÔÊ¾´°¿ÚµÄËõ·Å
-double factor = 1;														//IplImageµ½matµÄËõ·Å±¶Êı
-Detector detector1("yolov3.cfg", "yolov3.weights");						//¼ì²âÓÃ¡£²»ÖªµÀÎªÊ²Ã´×î¶à¿ªµ½3¸ö£¬Ö»ºÃ½«ÉãÏñÍ··Ö³ÉÈı×é£¬Ã¿×éÖğ¸öÊ¹ÓÃ
+Mat homograph;															//é€è§†å˜æ¢çŸ©é˜µ
+Mat video[MaxCameraNum];												//å­˜å‚¨è½¬æ¢ä¹‹åçš„å¸§
+Size s;																	//videoä¸­å¸§çš„å°ºå¯¸
+double scale_opencv = 1;												//è°ƒèŠ‚æ˜¾ç¤ºçª—å£çš„ç¼©æ”¾
+double factor = 1;														//IplImageåˆ°matçš„ç¼©æ”¾å€æ•°
+Detector detector1("yolov3.cfg", "yolov3.weights");						//æ£€æµ‹ç”¨ã€‚ä¸çŸ¥é“ä¸ºä»€ä¹ˆæœ€å¤šå¼€åˆ°3ä¸ªï¼Œåªå¥½å°†æ‘„åƒå¤´åˆ†æˆä¸‰ç»„ï¼Œæ¯ç»„é€ä¸ªä½¿ç”¨
 Detector detector2("yolov3.cfg", "yolov3.weights");
 Detector detector3("yolov3.cfg", "yolov3.weights");
 
@@ -103,7 +103,7 @@ CamHandle HKCamDriver::InitCamera(char *sIP, char *UsrName, char *PsW, int Port)
 	NET_DVR_CLIENTINFO ClientInfo;
 	ClientInfo.lChannel = 1;                    /* Channel number Device channel number. */
 	ClientInfo.hPlayWnd = NULL;                 /* Window is NULL                        */
-	ClientInfo.lLinkMode = 1;                   /* ×ÓÂëÁ÷                            */
+	ClientInfo.lLinkMode = 1;                   /* å­ç æµ                            */
 	ClientInfo.sMultiCastIP = NULL;
 
 	lRealPlayHandle = NET_DVR_RealPlay_V30(lUserID, &ClientInfo, fRealDataCallBack, NULL, TRUE);
@@ -156,7 +156,7 @@ void CALLBACK  HKCamDriver::DecCBFun(long nPort, char * pBuf, long nSize, FRAME_
 				case WAIT_OBJECT_0:
 				{
 					pImg[nPort][triggerTemp].addQue(pImgTemp[nPort]);
-					//²âÊÔÓÃ´úÂë
+					//æµ‹è¯•ç”¨ä»£ç 
 					/*
 					char winname[20] = "E:\\test\\";
 					char name[4] = "";
@@ -179,12 +179,12 @@ void CALLBACK  HKCamDriver::DecCBFun(long nPort, char * pBuf, long nSize, FRAME_
 			else
 			{
 				pImg[nPort][triggerTemp].addQue(pImgTemp[nPort]);
-				//²âÊÔÓÃ´úÂë
+				//æµ‹è¯•ç”¨ä»£ç 
 				//cvShowImage("test1", &pImg[nPort][triggerTemp]._pQue[0]);
 				//waitKey(2);
 
 			}
-			//²âÊÔÓÃ´úÂë
+			//æµ‹è¯•ç”¨ä»£ç 
 			char winname[20] = "E:\\test\\";
 			char name[4] = "";
 			_itoa(nPort, name, 10);
@@ -251,10 +251,10 @@ void CALLBACK HKCamDriver::fRealDataCallBack(LONG lRealHandle, DWORD dwDataType,
 	{
 		/*  System Head    */
 	case NET_DVR_SYSHEAD:
-		if (!PlayM4_GetPort(&nPort[CameraIndex]))break;  //»ñÈ¡²¥·Å¿âÎ´Ê¹ÓÃµÄÍ¨µÀºÅ
+		if (!PlayM4_GetPort(&nPort[CameraIndex]))break;  //è·å–æ’­æ”¾åº“æœªä½¿ç”¨çš„é€šé“å·
 
 		if (dwBufSize > 0) {
-			if (!PlayM4_SetStreamOpenMode(nPort[CameraIndex], STREAME_REALTIME))  //ÉèÖÃÊµÊ±Á÷²¥·ÅÄ£Ê½
+			if (!PlayM4_SetStreamOpenMode(nPort[CameraIndex], STREAME_REALTIME))  //è®¾ç½®å®æ—¶æµæ’­æ”¾æ¨¡å¼
 			{
 				break;
 			}
@@ -300,7 +300,7 @@ void CALLBACK HKCamDriver::fRealDataCallBack(LONG lRealHandle, DWORD dwDataType,
 		}
 		break;
 
-	default: //ÆäËûÊı¾İ
+	default: //å…¶ä»–æ•°æ®
 		if (dwBufSize > 0 && nPort[CameraIndex] != -1)
 		{
 			if (!PlayM4_InputData(nPort[CameraIndex], pBuffer, dwBufSize))
@@ -357,7 +357,7 @@ DWORD WINAPI threadproc(LPVOID lpParam)
 					case WAIT_OBJECT_0:
 						if (!pImg[iPort][!trigger[iPort]].empty())
 						{
-							//²âÊÔÓÃ´úÂë
+							//æµ‹è¯•ç”¨ä»£ç 
 							//cvShowImage("test0", &pImg[iPort][!trigger[iPort]]._pQue[0]);
 							//waitKey(2);
 							Imgtemp = cvarrToMat(&pImg[iPort][!trigger[iPort]]._pQue[0]);
@@ -432,7 +432,7 @@ DWORD WINAPI threadproc(LPVOID lpParam)
 					int width = s.width*scale_opencv*(iPort % 4);
 					int height = s.height*(scale_opencv + 0.06) * (0 * (iPort >= 0 && iPort < 4) + 1 * (iPort >= 4 && iPort < 8) + 2 * (iPort >= 8 && iPort < 12) + 3 * (iPort >= 12 && iPort < 16));
 					cvMoveWindow(strcat(win, idex), width, height);
-					//²âÊÔ´úÂë
+					//æµ‹è¯•ä»£ç 
 					//imwrite("E:\\test\\test.jpg", detectImg);
 
 					waitKey(2);
@@ -527,22 +527,22 @@ void HKCamDriver::SetScaleFactor(float factor)
 
 
 
-// ÓÃÓÚÓ¦ÓÃ³ÌĞò¡°¹ØÓÚ¡±²Ëµ¥ÏîµÄ CAboutDlg ¶Ô»°¿ò
+// ç”¨äºåº”ç”¨ç¨‹åºâ€œå…³äºâ€èœå•é¡¹çš„ CAboutDlg å¯¹è¯æ¡†
 
 class CAboutDlg : public CDialogEx
 {
 public:
 	CAboutDlg();
 
-	// ¶Ô»°¿òÊı¾İ
+	// å¯¹è¯æ¡†æ•°æ®
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
-														// ÊµÏÖ
+														// å®ç°
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
@@ -563,7 +563,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CFirstphaseDlg ¶Ô»°¿ò
+// CFirstphaseDlg å¯¹è¯æ¡†
 
 
 
@@ -596,15 +596,15 @@ BEGIN_MESSAGE_MAP(CFirstphaseDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CFirstphaseDlg ÏûÏ¢´¦Àí³ÌĞò
+// CFirstphaseDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 BOOL CFirstphaseDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// ½«¡°¹ØÓÚ...¡±²Ëµ¥ÏîÌí¼Óµ½ÏµÍ³²Ëµ¥ÖĞ¡£
+	// å°†â€œå…³äº...â€èœå•é¡¹æ·»åŠ åˆ°ç³»ç»Ÿèœå•ä¸­ã€‚
 
-	// IDM_ABOUTBOX ±ØĞëÔÚÏµÍ³ÃüÁî·¶Î§ÄÚ¡£
+	// IDM_ABOUTBOX å¿…é¡»åœ¨ç³»ç»Ÿå‘½ä»¤èŒƒå›´å†…ã€‚
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
@@ -622,14 +622,14 @@ BOOL CFirstphaseDlg::OnInitDialog()
 		}
 	}
 
-	// ÉèÖÃ´Ë¶Ô»°¿òµÄÍ¼±ê¡£  µ±Ó¦ÓÃ³ÌĞòÖ÷´°¿Ú²»ÊÇ¶Ô»°¿òÊ±£¬¿ò¼Ü½«×Ô¶¯
-	//  Ö´ĞĞ´Ë²Ù×÷
-	SetIcon(m_hIcon, TRUE);			// ÉèÖÃ´óÍ¼±ê
-	SetIcon(m_hIcon, FALSE);		// ÉèÖÃĞ¡Í¼±ê
+	// è®¾ç½®æ­¤å¯¹è¯æ¡†çš„å›¾æ ‡ã€‚  å½“åº”ç”¨ç¨‹åºä¸»çª—å£ä¸æ˜¯å¯¹è¯æ¡†æ—¶ï¼Œæ¡†æ¶å°†è‡ªåŠ¨
+	//  æ‰§è¡Œæ­¤æ“ä½œ
+	SetIcon(m_hIcon, TRUE);			// è®¾ç½®å¤§å›¾æ ‡
+	SetIcon(m_hIcon, FALSE);		// è®¾ç½®å°å›¾æ ‡
 
-									// TODO: ÔÚ´ËÌí¼Ó¶îÍâµÄ³õÊ¼»¯´úÂë
+									// TODO: åœ¨æ­¤æ·»åŠ é¢å¤–çš„åˆå§‹åŒ–ä»£ç 
 
-	return TRUE;  // ³ı·Ç½«½¹µãÉèÖÃµ½¿Ø¼ş£¬·ñÔò·µ»Ø TRUE
+	return TRUE;  // é™¤éå°†ç„¦ç‚¹è®¾ç½®åˆ°æ§ä»¶ï¼Œå¦åˆ™è¿”å› TRUE
 }
 
 void CFirstphaseDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -645,19 +645,19 @@ void CFirstphaseDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
-// Èç¹ûÏò¶Ô»°¿òÌí¼Ó×îĞ¡»¯°´Å¥£¬ÔòĞèÒªÏÂÃæµÄ´úÂë
-//  À´»æÖÆ¸ÃÍ¼±ê¡£  ¶ÔÓÚÊ¹ÓÃÎÄµµ/ÊÓÍ¼Ä£ĞÍµÄ MFC Ó¦ÓÃ³ÌĞò£¬
-//  Õâ½«ÓÉ¿ò¼Ü×Ô¶¯Íê³É¡£
+// å¦‚æœå‘å¯¹è¯æ¡†æ·»åŠ æœ€å°åŒ–æŒ‰é’®ï¼Œåˆ™éœ€è¦ä¸‹é¢çš„ä»£ç 
+//  æ¥ç»˜åˆ¶è¯¥å›¾æ ‡ã€‚  å¯¹äºä½¿ç”¨æ–‡æ¡£/è§†å›¾æ¨¡å‹çš„ MFC åº”ç”¨ç¨‹åºï¼Œ
+//  è¿™å°†ç”±æ¡†æ¶è‡ªåŠ¨å®Œæˆã€‚
 
 void CFirstphaseDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // ÓÃÓÚ»æÖÆµÄÉè±¸ÉÏÏÂÎÄ
+		CPaintDC dc(this); // ç”¨äºç»˜åˆ¶çš„è®¾å¤‡ä¸Šä¸‹æ–‡
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
-		// Ê¹Í¼±êÔÚ¹¤×÷Çø¾ØĞÎÖĞ¾ÓÖĞ
+		// ä½¿å›¾æ ‡åœ¨å·¥ä½œåŒºçŸ©å½¢ä¸­å±…ä¸­
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
@@ -665,7 +665,7 @@ void CFirstphaseDlg::OnPaint()
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
-		// »æÖÆÍ¼±ê
+		// ç»˜åˆ¶å›¾æ ‡
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
@@ -674,8 +674,8 @@ void CFirstphaseDlg::OnPaint()
 	}
 }
 
-//µ±ÓÃ»§ÍÏ¶¯×îĞ¡»¯´°¿ÚÊ±ÏµÍ³µ÷ÓÃ´Ëº¯ÊıÈ¡µÃ¹â±ê
-//ÏÔÊ¾¡£
+//å½“ç”¨æˆ·æ‹–åŠ¨æœ€å°åŒ–çª—å£æ—¶ç³»ç»Ÿè°ƒç”¨æ­¤å‡½æ•°å–å¾—å…‰æ ‡
+//æ˜¾ç¤ºã€‚
 HCURSOR CFirstphaseDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
@@ -686,37 +686,37 @@ HCURSOR CFirstphaseDlg::OnQueryDragIcon()
 void CFirstphaseDlg::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 	*pResult = 0;
 }
 
 
 void CFirstphaseDlg::OnCbnSelchangeCombo1()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 }
 
 
 void CFirstphaseDlg::OnBnClickedButton5()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 	if (NULL == m_pCPLANE)
 	{
-		// ´´½¨·ÇÄ£Ì¬¶Ô»°¿òÊµÀı   
+		// åˆ›å»ºéæ¨¡æ€å¯¹è¯æ¡†å®ä¾‹   
 		m_pCPLANE = new CPLANE();
 		m_pCPLANE->Create(IDD_DIALOG_PLANE, this);
 	}
-	// ÏÔÊ¾·ÇÄ£Ì¬¶Ô»°¿ò   
+	// æ˜¾ç¤ºéæ¨¡æ€å¯¹è¯æ¡†   
 	m_pCPLANE->ShowWindow(SW_SHOW);
 }
 
 
 CFirstphaseDlg::~CFirstphaseDlg()
 {
-	// Èç¹û·ÇÄ£Ì¬¶Ô»°¿òÒÑ¾­´´½¨ÔòÉ¾³ıËü   
+	// å¦‚æœéæ¨¡æ€å¯¹è¯æ¡†å·²ç»åˆ›å»ºåˆ™åˆ é™¤å®ƒ   
 	if (NULL != m_pCPLANE || NULL != m_pCTRACK)
 	{
-		// É¾³ı·ÇÄ£Ì¬¶Ô»°¿ò¶ÔÏó   
+		// åˆ é™¤éæ¨¡æ€å¯¹è¯æ¡†å¯¹è±¡   
 		delete m_pCPLANE;
 		delete m_pCTRACK;
 	}
@@ -724,7 +724,7 @@ CFirstphaseDlg::~CFirstphaseDlg()
 
 void CFirstphaseDlg::OnBnClickedButton6()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 	/*
 	CString tempstr;
 	double scale_opencv = 1;
@@ -738,14 +738,14 @@ void CFirstphaseDlg::OnBnClickedButton6()
 	homograph = solve_perspective();
 	SetTimer(timerId, timerInterval, NULL);
 	GetDlgItem(IDC_BUTTON_TRACK)->GetWindowText(tempstr);
-	if (tempstr == _T("ÏÔÊ¾ÊµÊ±¸ú×Ù"))
+	if (tempstr == _T("æ˜¾ç¤ºå®æ—¶è·Ÿè¸ª"))
 	{
-		GetDlgItem(IDC_BUTTON_TRACK)->SetWindowText(_T("Í£Ö¹ÊµÊ±¸ú×Ù"));
+		GetDlgItem(IDC_BUTTON_TRACK)->SetWindowText(_T("åœæ­¢å®æ—¶è·Ÿè¸ª"));
 		theApp.mark_track = 1;
 	}
 	else
 	{
-		GetDlgItem(IDC_BUTTON_TRACK)->SetWindowText(_T("ÏÔÊ¾ÊµÊ±¸ú×Ù"));
+		GetDlgItem(IDC_BUTTON_TRACK)->SetWindowText(_T("æ˜¾ç¤ºå®æ—¶è·Ÿè¸ª"));
 		theApp.mark_track = 0;
 	}
 	//SetPriorityClass(GetCurrentProcess(), THREAD_PRIORITY_TIME_CRITICAL);
@@ -834,29 +834,29 @@ void CFirstphaseDlg::OnBnClickedButton6()
 
 void CAboutDlg::OnBnClickedButton1()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 
 }
 
 
 void CFirstphaseDlg::OnBnClickedButtonAddall()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 
 	ifstream in("C:/Users/c1/Desktop/IP.txt");
 	string line_IP;
 	int idex = 0;
-	if (in) // ÓĞ¸ÃÎÄ¼ş
+	if (in) // æœ‰è¯¥æ–‡ä»¶
 	{
 		char c[20] = { 0 };
-		while (getline(in, line_IP) && idex < MaxCameraNum) // lineÖĞ²»°üÀ¨Ã¿ĞĞµÄ»»ĞĞ·û
+		while (getline(in, line_IP) && idex < MaxCameraNum) // lineä¸­ä¸åŒ…æ‹¬æ¯è¡Œçš„æ¢è¡Œç¬¦
 		{
 			strcpy(c, line_IP.c_str());
 			theApp.m_CamDriver[idex++].InitCamera(c, "admin", "wls771102", 8000);
 		}
 	}
 	Sleep(500 * MaxCameraNum);
-	MessageBox(_T("Éè±¸ÒÑ¼ÓÔØÍê"), _T("¼ÓÔØÇé¿ö"), MB_OK);
+	MessageBox(_T("è®¾å¤‡å·²åŠ è½½å®Œ"), _T("åŠ è½½æƒ…å†µ"), MB_OK);
 }
 
 
@@ -865,7 +865,7 @@ void CFirstphaseDlg::OnBnClickedButtonAddall()
 
 void CFirstphaseDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
+	// TODO: åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
 	switch (nIDEvent)
 	{
 	case 1:
